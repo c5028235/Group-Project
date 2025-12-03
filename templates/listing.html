@@ -1,0 +1,56 @@
+{% extends "base2.html" %}
+
+<!-- Page Title -->
+{% set title = listing['title'] %}
+
+<!-- Page Content -->
+{% block content %}
+
+<h1>{{ listing['title'] }} ({{ listing['release_year'] }})</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-4 mb-3 text-center">
+        <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['title'] }}" class="img-fluid">
+    </div>
+
+    <div class="col-md-8">
+        <h4>Tagline</h4>
+        <p>{{ listing['tagline'] }}</p>
+
+        <h4>Director</h4>
+        <p>{{ listing['director'] }}</p>
+
+        <h4>Genre</h4>
+        <p>{{ listing['genre'] }}</p>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Sidebar Content -->
+{% block sidebarContent %}
+
+<!-- Manage listing card -->
+{% if session['user_id'] == listing['user'] %}
+<div class="card text-center mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Manage listing</h5>
+        <form method="post" class="btn-group" action="{{ url_for('delete', id=listing['id']) }}"
+            onsubmit="return confirm('Are you sure you want to delete this listing?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary">Update</a>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<!-- Back to all listings card -->
+<div class="card text-center mt-3">
+    <div class="card-body">
+        <a href="{{ url_for('listings') }}" class="btn btn-secondary w-100">Back to All listings</a>
+    </div>
+</div>
+
+{% endblock %}

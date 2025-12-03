@@ -16,7 +16,7 @@
 <body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <nav class="navbar navbar-expand-lg navbar-dark nav-bg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">{{ siteName }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -27,6 +27,9 @@
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                     <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link" href="/listings">Listings</a>
+                </div>
+                <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="/register">Register</a>
                     <a class="nav-link" href="/login">Login</a>
                 </div>
@@ -35,7 +38,7 @@
     </nav>
 
     <!--  2 Column Layout  -->
-    <div class="container mt-2" style="max-width:600px">
+    <main class="container-fluid mt-2">
         <div class="row">
 
             <!-- Column 1: Main Content -->
@@ -66,15 +69,16 @@
                         <p class="card-text">We have another page</p>
                         <a href="/about" class="btn btn-primary">Go There</a>
                     </div>
-                </div>
+                </div> -->
 
-                {% block sidebarContent %} -->
+            {% block sidebarContent %}
             <!-- This is where any sidebar content from child templates will be inserted -->
-            <!-- {% endblock %}
-            </div> -->
-
+            {% endblock %}
         </div>
-    </div>
+        </div>
+
+
+    </main>
     <footer class="text-center mt-4">
         <p>&copy; 2025</p>
     </footer>

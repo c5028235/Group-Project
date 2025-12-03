@@ -1,0 +1,78 @@
+/* This basic CSS file sets the background colour and text colour for the entire page */
+body {
+    background-color: rgb(139, 71, 71);
+    /* Background Colour */
+    color: white;
+    /* Text Colour */
+}
+
+/* Global styles / Bootstrap Overrides */
+
+/* .card-title {
+    color: red
+} */
+
+/* Default body styles */
+.nav-bg {
+    background-color: peru;
+}
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Main content area */
+#main-content {
+    background-color: rgba(25, 107, 74, 0.06);
+    padding: 30px;
+    border-radius: 10px 0 0 10px;
+    margin-top: 40px;
+    height: 400%;
+}
+
+/* Sidebar */
+#sidebar {
+    background-color: rgba(30, 30, 30, 0.12);
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+    margin-top: 20px;
+}
+
+/* No Border Radius for Main Content and Sidebar on Mobile */
+@media (max-width: 768px) {
+
+    #main-content,
+    #sidebar {
+        border-radius: 0;
+    }
+}
+
+/* Footer */
+footer {
+    color: #cccccc;
+    width: 100%;
+}
+
+.landing-mid-text-style {
+    text-align: center;
+
+}
+
+.landing-mid-div {
+    justify-content: center;
+    align-items: center;
+    font-family: Georgia, 'Times New Roman', Times, serif
+}
+
+.searchbox {
+    max-width: 500px
+}
+
+.searchbox-div {
+    margin-left: 70px;
+}
+
+.search_button-size {
+    height: 45px;
+    margin: 5px 0
+}
