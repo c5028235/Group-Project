@@ -6,12 +6,12 @@
 <!-- Page Content -->
 {% block content %}
 <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary mb-3 float-end">Edit</a>
-<h1>{{ listing['title'] }} ({{ listing['release_year'] }})</h1>
+<h1>{{ listing['type'] }} ({{ listing['duration'] }})</h1>
 <hr>
 
 <div class="row">
     <div class="col-md-4 mb-3 text-center">
-        <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['title'] }}" class="img-fluid">
+        <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['type'] }}" class="img-fluid">
     </div>
 
     <div class="col-md-8">

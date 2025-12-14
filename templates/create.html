@@ -11,25 +11,25 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
     <div class="col-lg-9">
-        <!-- Film Title textinput -->
+        <!-- Listing type textinput -->
         <div class="form-floating">
-            <input name="title" type="text" class="form-control" id="title" placeholder="Film Title">
-            <label for="title">Film Title</label>
+            <input name="type" type="text" class="form-control" id="type" placeholder="Listing Type">
+            <label for="type">Listing Type</label>
         </div>
     </div>
     <div class="col-lg-3">
         <!-- Release Year number input (with min and max attributes) -->
         <div class="form-floating">
-            <input name="release_year" type="number" class="form-control" id="release_year" placeholder="Release Year"
-                min="1900" max="2100">
-            <label for="release_year">Release Year</label>
+            <input name="duration" type="number" class="form-control" id="duration" placeholder="Duration" min="1900"
+                max="2100">
+            <label for="duration">Duration</label>
         </div>
     </div>
     <div class="col-12">
         <!-- Film Tag Line textinput -->
         <div class="form-floating">
-            <input name="tagline" type="text" class="form-control" id="tagline" placeholder="Film Tag Line">
-            <label for="tagline">Film Tag Line</label>
+            <input name="description" type="text" class="form-control" id="description" placeholder="Description">
+            <label for="description">Description</label>
         </div>
     </div>
     <div class="col-12">
