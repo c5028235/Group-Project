@@ -5,7 +5,7 @@
 <h1>{{ type }}</h1>
 <hr>
 
-<!-- Row for Films Grid-->
+<!-- Row for Listings Grid-->
 <div class="row g-1 g-sm-3">
     {% for listing in listings %}
     <div class="col-md-4">
@@ -13,29 +13,29 @@
     </div>
 
 
-    <!-- Film Card Column -->
+    <!-- Listing Card Column -->
     <div class="col-sm-8">
 
-        <!-- Film Card -->
+        <!-- Listing Card -->
         <div class="card h-100">
 
-            <!-- Film Card Content Row -->
+            <!-- Listing Card Content Row -->
             <div class="row g-0">
 
-                <!-- Film Image/Poster Columns -->
+                <!-- Listing Image/Poster Columns -->
                 <div
                     class="col-4 col-sm-12 col-xl-4 bg-secondary-subtle d-flex align-items-center justify-content-center">
                     <a href="{{ url_for('listing', id=listing['id']) }}">
                         <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['type'] }}" class="img-fluid">
                     </a>
                 </div>
-                <!-- Film Details Columns -->
+                <!-- Listing Details Columns -->
                 <div class="col-8 col-sm-12 col-xl-8">
                     <div class="card-body">
                         <h5 class="card-title">{{ listing['type'] }} ({{ listing['durarion'] }})</h5>
-                        <p class="card-text mb-1">{{ listing['tagline'] }}</p>
-                        <!-- Genre Badge and View Details Button -->
-                        <div class="badge text-bg-secondary mb-2">{{ listing['genre'] }}</div>
+                        <p class="card-text mb-1">{{ listing['Postcode'] }}</p>
+                        <!-- Location Badge and View Details Button -->
+                        <div class="badge text-bg-secondary mb-2">{{ listing['Location'] }}</div>
                         <br />
                         <p class="card-text mb-1">{{ listing['user'] }}</p>
                         <a href="{{ url_for('listing', id=listing['id']) }}"
