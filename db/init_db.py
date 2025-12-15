@@ -25,7 +25,7 @@ cur.execute("INSERT INTO users (username, password) VALUES (?, ?)",
 # Create films based on films_data in test_data.py
 for film in listings_data:
     cur.execute("INSERT INTO films (user, title, tagline, director, poster, release_year, genre, watched, rating, review) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (2, film['title'], film['tagline'], film['director'], film['poster'], film['release_year'], film['genre'], film['watched'], film['rating'], film['review'])
+                (2, film['listing_type'], film['tagline'], film['director'], film['poster'], film['release_year'], film['genre'], film['watched'], film['rating'], film['review'])
                 )
 
 # Commit the changes to the database and close the connection

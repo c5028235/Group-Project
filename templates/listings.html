@@ -32,11 +32,13 @@
                 <!-- Listing Details Columns -->
                 <div class="col-8 col-sm-12 col-xl-8">
                     <div class="card-body">
-                        <h5 class="card-title">{{ listing['type'] }} ({{ listing['durarion'] }})</h5>
-                        <p class="card-text mb-1">{{ listing['Postcode'] }}</p>
+                        <h5 class="card-title">{{ listing['listing_type'] }} ({{ listing['postcode'] }})</h5>
+                        <p class="card-text mb-1">{{ listing['postcode'] }}</p>
                         <!-- Location Badge and View Details Button -->
                         <div class="badge text-bg-secondary mb-2">{{ listing['Location'] }}</div>
+                        <h5 class="card-title">{{ listing['duration'] }}months ({{ listing['price'] }}/m)</h5>
                         <br />
+
                         <p class="card-text mb-1">{{ listing['user'] }}</p>
                         <a href="{{ url_for('listing', id=listing['id']) }}"
                             class="btn btn-sm btn-outline-secondary">More

@@ -7,17 +7,15 @@ CREATE TABLE users (
   password TEXT NOT NULL
 );
 
-CREATE TABLE films (
+CREATE TABLE listings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user INTEGER NOT NULL REFERENCES users(id),
-    title TEXT NOT NULL,
-    tagline TEXT,
-    director TEXT,
+    listing_type TEXT NOT NULL,
+    postcode TEXT,
+    description TEXT,
     poster TEXT,
-    release_year INTEGER,
-    genre TEXT,
-    watched BOOLEAN,
-    rating INTEGER,
-    review TEXT
+    duration INTEGER,
+    location TEXT,
+    price INTEGER,
 );

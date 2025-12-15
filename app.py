@@ -131,7 +131,7 @@ def listing(id):
     listing_data = get_listing_by_id(id)
 
     if listing_data:
-        return render_template('listing.html', title=listing_data['title'], listing=listing_data)
+        return render_template('listing.html', listing_type=listing_data['listing_type'], listing=listing_data)
     else:
         # If film not found, redirect to films list with a flash message
         flash(category='warning', message='Requested film not found!')
@@ -145,26 +145,25 @@ def create():
     # If the request method is POST, process the form submission
     if request.method == 'POST':
 
-        # Get the title input from the form
-        title = request.form['title']
+        # Get the type input from the form
+        listing_type = request.form['listing_type']
 
         # Validate the input
-        if not title:
-            flash(category='danger', message='Title is required!')
+        if not type:
+            flash(category='danger', message='Listing Type is required!')
             return render_template('create.html')
 
         # [TO-DO]: Add real creation logic here (e.g. save to database record)
         new_listing = {
             'user': 1,  # test user
-            'title': title,
-            'tagline': request.form.get('tagline'),
-            'director': request.form.get('director', ''),
+            'listing_type': type,
+            'postcode': request.form.get('postcode'),
+            'description': request.form.get('description', ''),
             'poster': request.form.get('poster', ''),
-            'release_year': request.form.get('release_year', 0),
-            'genre': request.form.get('genre', ''),
-            'watched': 'watched' in request.form,
-            'rating': request.form.get('rating', 0),
-            'review': request.form.get('review', '')
+            'duration': request.form.get('duration', 0),
+            'location': request.form.get('location', ''),
+            'bills_inclusive': 'bills_inclusive' in request.form,
+            'price': request.form.get('price', 0),
         }
         create_listing(new_listing)
         # ===========================
@@ -189,24 +188,23 @@ def update(id):
     if request.method == 'POST':
 
         # Get the title input from the form
-        title = request.form['title']
+        listing_type = request.form['listing_type']
 
         # Validate the input
-        if not title:
-            flash(category='danger', message='Title is required!')
+        if not listing_type:
+            flash(category='danger', message='Listing Type is required!')
             return render_template('update.html', id=id)
 
         # [TO-DO]: Add real update logic here (e.g. update database record)
         updated_fields = {
-            'title': title,
-            'tagline': request.form.get('tagline', ''),
-            'director': request.form.get('director', ''),
+            'listing_type': listing_type,
+            'postcode': request.form.get('postcode', ''),
+            'description': request.form.get('description', ''),
             'poster': request.form.get('poster', ''),
-            'release_year': request.form.get('release_year', 0),
-            'genre': request.form.get('genre', ''),
-            'watched': 'watched' in request.form,
-            'rating': request.form.get('rating', 0),
-            'review': request.form.get('review', '')
+            'duration': request.form.get('duration', 0),
+            'location': request.form.get('location', ''),
+            'bills_inclusive': 'bills_inclusive' in request.form,
+            'price': request.form.get('price', 0),
         }
 
         update_listing(id, updated_fields)
