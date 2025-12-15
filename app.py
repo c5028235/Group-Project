@@ -149,19 +149,19 @@ def create():
         listing_type = request.form['listing_type']
 
         # Validate the input
-        if not type:
+        if not listing_type:
             flash(category='danger', message='Listing Type is required!')
             return render_template('create.html')
 
         # [TO-DO]: Add real creation logic here (e.g. save to database record)
         new_listing = {
             'user': 1,  # test user
-            'listing_type': type,
+            'listing_type': listing_type,
             'postcode': request.form.get('postcode'),
-            'description': request.form.get('description', ''),
+            'listing_details': request.form.get('listing_details', ''),
             'poster': request.form.get('poster', ''),
             'duration': request.form.get('duration', 0),
-            'location': request.form.get('location', ''),
+            'town': request.form.get('town', ''),
             'bills_inclusive': 'bills_inclusive' in request.form,
             'price': request.form.get('price', 0),
         }
@@ -199,10 +199,10 @@ def update(id):
         updated_fields = {
             'listing_type': listing_type,
             'postcode': request.form.get('postcode', ''),
-            'description': request.form.get('description', ''),
+            'listing_details': request.form.get('listing_details', ''),
             'poster': request.form.get('poster', ''),
             'duration': request.form.get('duration', 0),
-            'location': request.form.get('location', ''),
+            'town': request.form.get('town', ''),
             'bills_inclusive': 'bills_inclusive' in request.form,
             'price': request.form.get('price', 0),
         }

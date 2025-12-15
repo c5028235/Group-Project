@@ -37,9 +37,9 @@
     <div class="col-12">
         <!--Description textinput -->
         <div class="form-floating">
-            <input name="description" type="text" class="form-control" id="description" placeholder="description"
-                value="{{ listing['description'] }}">
-            <label for="description">description</label>
+            <input name="listing_details" type="text" class="form-control" id="listing_details" placeholder="listing_details"
+                value="{{ listing['listing_details'] }}">
+            <label for="listing_details">listing_details</label>
         </div>
     </div>
     <div class="col-12 mt-0">
@@ -51,22 +51,22 @@
         </div>
     </div>
     <div class="col-lg-5">
-        <!--location select with predefined options -->
+        <!--town select with predefined options -->
         <div class="form-floating">
-            <select name="location" class="form-select" id="location" aria-label="location select">
-                <option value="" {% if listing['location']=="" %}selected{% endif %}>Select Location</option>''
-                <option value="Sheffield" {% if listing['location']=="Sheffield" %}selected{% endif %}>Sheffield</option>
-                <option value="Doncaster" {% if listing['location']=="Doncaster" %}selected{% endif %}>Doncaster</option>
-                <option value="Rotherham" {% if listing['location']=="Rotherham" %}selected{% endif %}>Rotherham</option>
-                <option value="Manchester" {% if listing['location']=="Manchester" %}selected{% endif %}>Manchester</option>
-                <option value="Nothingham" {% if listing['location']=="Nothingham" %}selected{% endif %}>Nothingham</option>
-                <!-- <option value="Romance" {% if listing['location']=="Romance" %}selected{% endif %}>Romance</option>
-                <option value="Sci-Fi" {% if listing['location']=="Sci-Fi" %}selected{% endif %}>Sci-Fi</option>
-                <option value="Documentary" {% if listing['location']=="Documentary" %}selected{% endif %}>Documentary
+            <select name="town" class="form-select" id="town" aria-label="town select">
+                <option value="" {% if listing['town']=="" %}selected{% endif %}>Select Location</option>''
+                <option value="Sheffield" {% if listing['town']=="Sheffield" %}selected{% endif %}>Sheffield</option>
+                <option value="Doncaster" {% if listing['town']=="Doncaster" %}selected{% endif %}>Doncaster</option>
+                <option value="Rotherham" {% if listing['town']=="Rotherham" %}selected{% endif %}>Rotherham</option>
+                <option value="Manchester" {% if listing['town']=="Manchester" %}selected{% endif %}>Manchester</option>
+                <option value="Nothingham" {% if listing['town']=="Nothingham" %}selected{% endif %}>Nothingham</option>
+                <!-- <option value="Romance" {% if listing['town']=="Romance" %}selected{% endif %}>Romance</option>
+                <option value="Sci-Fi" {% if listing['town']=="Sci-Fi" %}selected{% endif %}>Sci-Fi</option>
+                <option value="Documentary" {% if listing['town']=="Documentary" %}selected{% endif %}>Documentary
                 </option>
-                <option value="Other" {% if listing['location']=="Other" %}selected{% endif %}>Other</option> -->
+                <option value="Other" {% if listing['town']=="Other" %}selected{% endif %}>Other</option> -->
             </select>
-            <label for="location">Location</label>
+            <label for="town">Location</label>
         </div>
     </div>
     <!-- <div class="col-sm-4 col-lg-2 pb-3 text-center">

@@ -6,7 +6,7 @@
 <!-- Page Content -->
 {% block content %}
 <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary mb-3 float-end">Edit</a>
-<h1>{{ listing['type'] }} ({{ listing['duration'] }})</h1>
+<h1>{{ listing['listing_type'] }} ({{ listing['duration'] }})</h1>
 <hr>
 
 <div class="row">
@@ -19,7 +19,7 @@
         <p>{{ listing['postcode'] }}</p> -->
 
         <h4>Description</h4>
-        <p>{{ listing['description'] }}</p>
+        <p>{{ listing['listing_details'] }}</p>
 
         <!-- <h4>location</h4>
         <p>{{ listing['location'] }}</p> -->

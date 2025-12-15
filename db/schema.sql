@@ -13,9 +13,9 @@ CREATE TABLE listings (
     user INTEGER NOT NULL REFERENCES users(id),
     listing_type TEXT NOT NULL,
     postcode TEXT,
-    description TEXT,
+    listing_details TEXT,
     poster TEXT,
     duration INTEGER,
-    location TEXT,
-    price INTEGER,
+    town TEXT,
+    price INTEGER
 );
