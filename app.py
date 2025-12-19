@@ -44,7 +44,6 @@ def about():
 
 # register page
 
-
 @app.route('/register/', methods=("GET", "POST"))
 def register():
     if request.method == "POST":
@@ -54,14 +53,23 @@ def register():
         password = request.form['password']
         repassword = request.form['repassword']
 
-        # Simple validation checks
-        error = None
-        if not username:
-            error = "Username is required!"
-        elif not password or not repassword:
-            error = "Password is required!"
-        elif password != repassword:
-            error = "Passwords do not match"
+      
+       # Check if username already exists
+       # [TO-DO]: Add real registration logic here (e.g., save to database)
+if get_user_by_username(username):
+    error = 'Username already exists! Please choose a different one.'
+
+# If no errors, insert the new user
+if error is None:
+    create_user(username, password)
+    flash(category='success', message=f"Registration successful! Welcome {username}!")
+    return redirect(url_for('login'))
+else:
+    # Else, re-render the registration form with error messages
+    flash(category='danger', message=f"Registration failed: {error}")
+    return render_template('register.html', title="Register")
+
+                            
 
         # Check if username already exists
         # if get_user_by_username(username):
