@@ -5,24 +5,24 @@
 
 <!-- Page Content -->
 {% block content %}
-
-<h1>{{ listing['title'] }} ({{ listing['release_year'] }})</h1>
+<a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary mb-3 float-end">Edit</a>
+<h1>{{ listing['listing_type'] }} ({{ listing['duration'] }})</h1>
 <hr>
 
 <div class="row">
     <div class="col-md-4 mb-3 text-center">
-        <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['title'] }}" class="img-fluid">
+        <img src="{{ listing['poster'] }}" alt="Poster for {{ listing['listing_type'] }}" class="img-fluid">
     </div>
 
     <div class="col-md-8">
-        <h4>Tagline</h4>
-        <p>{{ listing['tagline'] }}</p>
+        <!-- <h4>postcode</h4>
+        <p>{{ listing['postcode'] }}</p> -->
 
-        <h4>Director</h4>
-        <p>{{ listing['director'] }}</p>
+        <h4>Description</h4>
+        <p>{{ listing['listing_details'] }}</p>
 
-        <h4>Genre</h4>
-        <p>{{ listing['genre'] }}</p>
+        <!-- <h4>location</h4>
+        <p>{{ listing['location'] }}</p> -->
     </div>
 </div>
 

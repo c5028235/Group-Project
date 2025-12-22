@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import Flask, render_template, url_for, request, flash, redirect, session
 from flask_wtf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
-from db.db import get_all_listings, get_listing_by_id
+from db.db import *
 
 # Create a Flask application instance
 app = Flask(__name__)
@@ -139,11 +139,104 @@ def listing(id):
     listing_data = get_listing_by_id(id)
 
     if listing_data:
-        return render_template('listings.html', title=listing_data['title'], film=listing_data)
+        return render_template('listing.html', listing_type=listing_data['listing_type'], listing=listing_data)
     else:
         # If film not found, redirect to films list with a flash message
         flash(category='warning', message='Requested film not found!')
         return redirect(url_for('listings'))
+# Add A Film Page
+
+
+@app.route('/create/', methods=('GET', 'POST'))
+def create():
+
+    # If the request method is POST, process the form submission
+    if request.method == 'POST':
+
+        # Get the type input from the form
+        listing_type = request.form['listing_type']
+
+        # Validate the input
+        if not listing_type:
+            flash(category='danger', message='Listing Type is required!')
+            return render_template('create.html')
+
+        # [TO-DO]: Add real creation logic here (e.g. save to database record)
+        new_listing = {
+            'user': 1,  # test user
+            'listing_type': listing_type,
+            'postcode': request.form.get('postcode'),
+            'listing_details': request.form.get('listing_details', ''),
+            'poster': request.form.get('poster', ''),
+            'duration': request.form.get('duration', 0),
+            'town': request.form.get('town', ''),
+            'bills_inclusive': 'bills_inclusive' in request.form,
+            'price': request.form.get('price', 0),
+        }
+        create_listing(new_listing)
+        # ===========================
+
+        # Flash a success message
+        flash(category='success', message='Created successfully!')
+        return redirect(url_for('listings'))
+
+    return render_template('create.html', title="Add A New Listing")
+
+
+# Edit A Film Page
+@app.route('/update/<int:id>/', methods=('GET', 'POST'))
+def update(id):
+    # Get film data
+    listing_data = get_listing_by_id(id)
+    if not listing_data:
+        flash('Listing not found!', 'warning')
+        return redirect(url_for('listings'))
+
+    # If the request method is POST, process the form submission
+    if request.method == 'POST':
+
+        # Get the title input from the form
+        listing_type = request.form['listing_type']
+
+        # Validate the input
+        if not listing_type:
+            flash(category='danger', message='Listing Type is required!')
+            return render_template('update.html', id=id)
+
+        # [TO-DO]: Add real update logic here (e.g. update database record)
+        updated_fields = {
+            'listing_type': listing_type,
+            'postcode': request.form.get('postcode', ''),
+            'listing_details': request.form.get('listing_details', ''),
+            'poster': request.form.get('poster', ''),
+            'duration': request.form.get('duration', 0),
+            'town': request.form.get('town', ''),
+            'bills_inclusive': 'bills_inclusive' in request.form,
+            'price': request.form.get('price', 0),
+        }
+
+        update_listing(id, updated_fields)
+        # ===========================
+
+        # Flash a success message
+        flash(category='success', message='Updated successfully!')
+        return redirect(url_for('listing', id=id))
+
+    return render_template('update.html', title="Update listing", listing=listing_data)
+
+# Delete A Film
+
+
+@app.route('/delete/<int:id>', methods=('POST',))
+def delete(id):
+
+    # [TO-DO]: Add real deletion logic here (e.g. delete database record)
+    delete_listing(id)
+    # ===========================
+
+    # Flash a success message and redirect to the index page
+    flash(category='success', message='Listing deleted successfully!')
+    return redirect(url_for('listings'))
 
 
 @app.route('/profile/')
