@@ -61,75 +61,75 @@ def about():
 # register page
 
 
-@app.route('/register/', methods=("GET", "POST"))
+@app.route('/register/', methods=["GET", "POST"])
 def register():
+    error = None
+
     if request.method == "POST":
+        # Get form data
+        username = request.form.get('username')
+        password = request.form.get('password')
+        repassword = request.form.get('repassword')
 
-        # get the username and password from the form
-        username = request.form['username']
-        password = request.form['password']
-        repassword = request.form['repassword']
-
-        # Simple validation checks
-        error = None
-        if not username:
-            error = "Username is required!"
-        elif not password or not repassword:
-            error = "Password is required!"
-        elif password != repassword:
-            error = "Passwords do not match"
+        # Validate password match
+        if password != repassword:
+            error = "Passwords do not match!"
 
         # Check if username already exists
-        # if get_user_by_username(username):
-        #     error = 'Username already exists! Please choose a different one.'
+        elif get_user_by_username(username):
+            error = "Username already exists! Please choose a different one."
 
-        # display appropriate flash messages
+        # If no errors, create the user
         if error is None:
-            flash(category="success",
-                  message=f"Account created succesfully! Well done {username}")
+            create_user(username, password)
+            flash(
+                f"Registration successful! Welcome {username}!", category='success')
             return redirect(url_for('login'))
         else:
-            flash(category="danger", message=f"Registration failed: {error}")
+            flash(f"Registration failed: {error}", category='danger')
             return render_template('register.html', title="Register")
 
-    # if it's GET request, just render the registration page
+    # GET request → show registration page
     return render_template('register.html', title="Sign up")
 
 
-@app.route('/login/')
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
-    # if the login requeust is a POST Method
-    if request.method == "POST":
-        # get the username and password from the form
-        username = request.form["username"]
-        password = request.form["password"]
+    error = None
 
-        # Simple validation checks
-        if not username:
-            error = "Username is required!"
-        elif not password:
-            error = "Password is required!"
+    # If the login request is a POST method
+    if request.method == "POST":
+        # Get the username and password from the form
+        username = request.form.get("username")
+        password = request.form.get("password")
 
         # Validate user credentials
-        # if error is None:
-        #     user = validate_login(username, password)
-        #     if user is None:
-        #         error = 'Invalid username or password!'
-        #     else:
-        #         session.clear()
-        #         session['user_id'] = user['id']
-        #         session['username'] = user['username']
+        user = validate_login(username, password)
 
-        # dispaly appropriate flash messages
-        if error is None:
-            flash(category='success',
-                  message=f'login successful. Welcome {username}')
+        if user is None:
+            error = 'Invalid username or password!'
         else:
-            flash(category='danger', message=f'login failed: {error}')
-    return render_template('login.html', title="Log In")
+            session.clear()
+            session['user_id'] = user['id']
+            session['username'] = user['username']
+            # or wherever you want to redirect
+            return redirect(url_for('listings'))
+
+    # Render login page with error (if any)
+    return render_template('login.html', error=error)
+
+# Logout
+
+
+@app.route('/logout/')
+def logout():
+    # Clear the session and redirect to the index page with a flash message
+    session.clear()
+    flash(category='info', message='You have been logged out.')
+    return redirect(url_for('landing'))
+
 
 # listings page
-
 
 @app.route('/listings/')
 def listings():
