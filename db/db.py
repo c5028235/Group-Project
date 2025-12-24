@@ -107,8 +107,7 @@ def get_all_listings(user=None, limit=None, order_by='title ASC'):
 
 def get_listing_by_id(listing_id):
     conn = get_db_connection()
-    listing = conn.execute('SELECT * FROM listings WHERE id = ?',
-                        (listing_id,)).fetchone()
+    listing = conn.execute('SELECT * FROM listings WHERE id = ?', (listing_id,)).fetchone()
     conn.close()
     return listing
 
@@ -141,8 +140,8 @@ def delete_listing(listing_id):
     return
 
 # Get all listings
-def get_all_listings():
-    return listings_data
+# def get_all_listings():
+#     return listings_data
 
 # Get a listing by its ID
 

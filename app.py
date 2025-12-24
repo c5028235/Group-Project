@@ -23,6 +23,13 @@ localSiteName = "Tenancy Takeovers"
 def inject_site_name():
     return dict(siteName=localSiteName)
 
+# Helper function to get a username by user ID and provide it to templates 
+# eg: {{ film['user']|get_username }})
+@app.template_filter()
+def get_username(user_id):
+    user = get_user_by_id(user_id)
+    return user['username'] if user else 'Unknown'
+
 # Routes
 # ===================
 # Home Page
@@ -32,8 +39,17 @@ def inject_site_name():
 def home():
     # This defines a variable 'studentName' that will be passed to the output HTML
     studentName = "SHU Student"
-    # Render HTML with the name in a H1 tag
-    return render_template('landing.html', title="Welcome", username=studentName)
+    # If a ‘username’ exists in the session data, use this instead
+    if 'username' in session:
+        studentName = session['username']
+
+    # Get a list of listings to display on the homepage
+    listings = get_all_listings(limit=5, order_by='created DESC')  # Fetch the latest 5 listings added
+
+    # Render the 'index.html' template and pass the 'name' variable to it and a title to set the page title dynamically
+    return render_template('landing.html', title="Welcome", username=studentName, listings=listings)
+
+    
 
 # about page
 
@@ -117,6 +133,14 @@ def login():
 
 @app.route('/listings/')
 def listings():
+     # Get the logged-in user's ID from the session
+    user_id = session.get('user_id')
+
+    # Ensure user is logged in to view films
+    if user_id is None:
+        flash(category='warning', message='You must be logged in to view this page.')
+        return redirect(url_for('login'))
+
     # get all listings
     tenancy_list = get_all_listings()
     return render_template('listings.html', title='All Listings', listings=tenancy_list)
@@ -133,12 +157,25 @@ def listing(id):
     if listing_data:
         return render_template('listing.html', listing_type=listing_data['listing_type'], listing=listing_data)
     else:
-        # If film not found, redirect to films list with a flash message
-        flash(category='warning', message='Requested film not found!')
+        # If film not found, redirect to listings list with a flash message
+        flash(category='warning', message='Requested listings not found!')
         return redirect(url_for('listings'))
+
+# Users listings List Page
+@app.route('/listings/<int:user_id>/')
+def userlistings(user_id):
+    
+    # Get listing data
+    listing_list = get_all_listings(user_id)
+
+    # Get user info
+    user = get_user_by_id(user_id)
+
+    # Render the listing.html template with a list of listings
+    return render_template('listings.html', title=f"listings added by {user['username']}", listings=listing_list, listings_user=user_id)
+
+
 # Add A Film Page
-
-
 @app.route('/create/', methods=('GET', 'POST'))
 def create():
 
