@@ -44,6 +44,7 @@ def about():
 
 # register page
 
+
 @app.route('/register/', methods=["GET", "POST"])
 def register():
     error = None
@@ -65,7 +66,8 @@ def register():
         # If no errors, create the user
         if error is None:
             create_user(username, password)
-            flash(f"Registration successful! Welcome {username}!", category='success')
+            flash(
+                f"Registration successful! Welcome {username}!", category='success')
             return redirect(url_for('login'))
         else:
             flash(f"Registration failed: {error}", category='danger')
@@ -94,10 +96,22 @@ def login():
             session.clear()
             session['user_id'] = user['id']
             session['username'] = user['username']
-            return redirect(url_for('dashboard'))  # or wherever you want to redirect
+            # or wherever you want to redirect
+            return redirect(url_for('listings'))
 
     # Render login page with error (if any)
     return render_template('login.html', error=error)
+
+# Logout
+
+
+@app.route('/logout/')
+def logout():
+    # Clear the session and redirect to the index page with a flash message
+    session.clear()
+    flash(category='info', message='You have been logged out.')
+    return redirect(url_for('landing'))
+
 
 # listings page
 
