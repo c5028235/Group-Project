@@ -5,7 +5,10 @@
 
 <!-- Page Content -->
 {% block content %}
-<a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary mb-3 float-end">Edit</a>
+{% if session['user_id'] == listing['user'] %}
+    <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary mb-3 float-end">Edit</a>
+{% endif %}
+
 <h1>{{ listing['listing_type'] }} ({{ listing['duration'] }})</h1>
 <hr>
 
@@ -31,26 +34,29 @@
 <!-- Sidebar Content -->
 {% block sidebarContent %}
 
-<!-- Manage listing card -->
-{% if session['user_id'] == listing['user'] %}
-<div class="card text-center mt-3">
-    <div class="card-body">
-        <h5 class="card-title">Manage listing</h5>
-        <form method="post" class="btn-group" action="{{ url_for('delete', id=listing['id']) }}"
-            onsubmit="return confirm('Are you sure you want to delete this listing?');">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary">Update</a>
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
+<    <!-- Manage listing card -->
+    {% if session['user_id'] == listing['user'] %}
+        <div class="card text-center mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Manage listing</h5>
+                <form method="post" class="btn-group" action="{{ url_for('delete', id=listing['id']) }}" onsubmit="return confirm('Are you sure you want to delete this film?');"> 
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <a href="{{ url_for('update', id=listing['id']) }}" class="btn btn-primary">Update</a>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Back to all listings card -->
+    <div class="card text-center mt-3">                                                                                   
+        <div class="card-body">
+            {% if session['user_id'] == listing['user'] %}
+                <a href="{{ url_for('listing') }}" class="btn btn-secondary w-100">Back to All listings</a>
+            {% else %}
+                <a href="{{ url_for('userlistings', user_id=listing['user']) }}" class="btn btn-secondary w-100">Back to {{ listing['user']|get_username }}'s Listings</a>
+            {% endif %}
+        </div>
     </div>
 </div>
-{% endif %}
-
-<!-- Back to all listings card -->
-<div class="card text-center mt-3">
-    <div class="card-body">
-        <a href="{{ url_for('listings') }}" class="btn btn-secondary w-100">Back to All listings</a>
-    </div>
-</div>
-
 {% endblock %}

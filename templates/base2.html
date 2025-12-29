@@ -26,8 +26,10 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    {% if session['user_id'] %}
                     <a class="nav-link" href="/listings">Listings</a>
                     <a class="nav-link" href="/about">About</a>
+                    {% endif %}
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if session['user_id'] %}
