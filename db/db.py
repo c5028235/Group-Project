@@ -79,7 +79,7 @@ def get_user_by_id(user_id):
 # Listing Display functions
 # =========================================================
 # Get all listings (or filter by user)
-def get_all_listings(user=None, limit=None, order_by='title ASC'):
+def get_all_listings(user=None, limit=None, order_by='listing_type ASC'):
     conn = get_db_connection()
     # Construct base query
     query = 'SELECT * FROM listings'

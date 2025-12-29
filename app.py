@@ -36,7 +36,7 @@ def get_username(user_id):
 
 
 @app.route('/')
-def home():
+def landing():
     # This defines a variable 'studentName' that will be passed to the output HTML
     studentName = "SHU Student"
     # If a ‘username’ exists in the session data, use this instead
