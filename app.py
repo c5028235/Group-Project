@@ -29,7 +29,7 @@ def inject_site_name():
 
 
 @app.route('/')
-def home():
+def landing():
     # This defines a variable 'studentName' that will be passed to the output HTML
     studentName = "SHU Student"
     # Render HTML with the name in a H1 tag
@@ -142,72 +142,78 @@ def listing(id):
 @app.route('/create/', methods=('GET', 'POST'))
 def create():
 
+    user = session.get('user_id')  # Get the logged-in user's ID from the session
+    # Ensure user is logged in to add films
+    if user is None:
+        flash(category='warning', message='You must be logged in to add a film.')
+        return redirect(url_for('login'))
+
     # If the request method is POST, process the form submission
     if request.method == 'POST':
 
         # Get the type input from the form
         listing_type = request.form['listing_type']
+        postcode = request.form['postcode']
+        listing_details = request.form['listing_details']
+        poster = request.form['poster']   #To do image upload
+        duration = request.form['duration']
+        town = request.form['town']
+        price= request.form['price']
 
         # Validate the input
         if not listing_type:
             flash(category='danger', message='Listing Type is required!')
-            return render_template('create.html')
+            return redirect(url_for('create'))
 
-        # [TO-DO]: Add real creation logic here (e.g. save to database record)
-        new_listing = {
-            'user': 1,  # test user
-            'listing_type': listing_type,
-            'postcode': request.form.get('postcode'),
-            'listing_details': request.form.get('listing_details', ''),
-            'poster': request.form.get('poster', ''),
-            'duration': request.form.get('duration', 0),
-            'town': request.form.get('town', ''),
-            'bills_inclusive': 'bills_inclusive' in request.form,
-            'price': request.form.get('price', 0),
-        }
-        create_listing(new_listing)
+        # Use the database function to insert new listing
+        create_listing(user, listing_type, postcode, listing_details, poster, duration, town, price)
         # ===========================
 
         # Flash a success message
-        flash(category='success', message='Created successfully!')
+        flash(category='success', message='Listing Created successfully!')
         return redirect(url_for('listings'))
 
     return render_template('create.html', title="Add A New Listing")
 
 
-# Edit A Film Page
+# Edit A Listing Page
 @app.route('/update/<int:id>/', methods=('GET', 'POST'))
 def update(id):
     # Get film data
     listing_data = get_listing_by_id(id)
+
+    # Check for errors
+    error = None
     if not listing_data:
-        flash('Listing not found!', 'warning')
+        error = 'Listing not found!'
+        flash(category= 'warning', message=error)
+    elif listing_data['user'] != session.get('user_id'):
+        error = 'You do not have permission to edit this listing.'
+        flash(category ='danger', message = error)
         return redirect(url_for('listings'))
+    if error:
+        redirect(url_for('listings'))
 
     # If the request method is POST, process the form submission
     if request.method == 'POST':
 
         # Get the title input from the form
         listing_type = request.form['listing_type']
+        postcode = request.form['postcode']
+        listing_details = request.form['listing_details']
+        poster = request.form['poster']   #To do image upload
+        duration = request.form['duration']
+        town = request.form['town']
+        price= request.form['price']
 
         # Validate the input
         if not listing_type:
             flash(category='danger', message='Listing Type is required!')
             return render_template('update.html', id=id)
 
-        # [TO-DO]: Add real update logic here (e.g. update database record)
-        updated_fields = {
-            'listing_type': listing_type,
-            'postcode': request.form.get('postcode', ''),
-            'listing_details': request.form.get('listing_details', ''),
-            'poster': request.form.get('poster', ''),
-            'duration': request.form.get('duration', 0),
-            'town': request.form.get('town', ''),
-            'bills_inclusive': 'bills_inclusive' in request.form,
-            'price': request.form.get('price', 0),
-        }
+        # Use database function to update listings
 
-        update_listing(id, updated_fields)
+        update_listing(id, listing_type, postcode, listing_details, poster, duration, town, price)
         # ===========================
 
         # Flash a success message
@@ -222,7 +228,23 @@ def update(id):
 @app.route('/delete/<int:id>', methods=('POST',))
 def delete(id):
 
-    # [TO-DO]: Add real deletion logic here (e.g. delete database record)
+    # Get the film 
+    listing = get_listing_by_id(id)
+    # Check for errors
+    error = None
+    if listing is None:     # If listing not found, add error message
+        error = 'Listing not found!'
+        flash(category='warning', message=error)
+    elif listing['user'] != session.get('user_id'):    # Check user is only accessing their own films
+        error = 'You do not have permission to delete this film.'
+        flash(category='danger', message=error)
+
+    # If there was an error, redirect to films list
+    if error:
+        return redirect(url_for('listings'))
+
+    # Use the database function to delete the film
+
     delete_listing(id)
     # ===========================
 

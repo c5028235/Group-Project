@@ -108,39 +108,46 @@ def get_all_listings(user=None, limit=None, order_by='title ASC'):
 def get_listing_by_id(listing_id):
     conn = get_db_connection()
     listing = conn.execute('SELECT * FROM listings WHERE id = ?',
-                        (listing_id,)).fetchone()
+                           (listing_id,)).fetchone()
     conn.close()
     return listing
 
-
+# Listings CRUD functions
 # Create a new listing
 
 
-def create_listing(listing_data):
-    # Generate a new ID based on the current max
-    new_id = max(f['id'] for f in listings_data) + 1 if listings_data else 1
-    listing_data['id'] = new_id
-    listings_data.append(listing_data)
-    return listing_data
+def create_listing(user_id, listing_type, postcode, listing_details, poster, duration, town, price):
+    conn = get_db_connection()
+    conn.execute('INSERT INTO films (user, listing_type, postcode, listing_details, poster, duration, town, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                 (user_id, listing_type, postcode, listing_details, poster, duration, town, price))
+    conn.commit()
+    conn.close()
+
 
 # Update an existing listing
 
 
-def update_listing(listing_id, updated_data):
-    listing = get_listing_by_id(listing_id)
-    if listing:
-        listing.update(updated_data)
-        return listing
-    return None
+def update_listing(listing_id, listing_type, postcode, listing_details, poster, duration, town, price):
+    conn = get_db_connection()
+    conn.execute('UPDATE listings SET listing_type = ?, postcode = ?, listing_details = ?, poster = ?, duration = ?, town = ?, price = ? WHERE id = ?',
+                 (listing_type, postcode, listing_details, poster, duration, town, price, listing_id))
+    conn.commit()
+    conn.close()
+
 
 # Delete a listing by its ID
 
 
 def delete_listing(listing_id):
-    listings_data.pop(listing_id-1)
-    return
+    conn = get_db_connection()
+    conn.execute('DELETE FROM films WHERE id = ?', (listing_id,))
+    conn.commit()
+    conn.close()
+
 
 # Get all listings
+
+
 def get_all_listings():
     return listings_data
 
