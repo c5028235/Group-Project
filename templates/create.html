@@ -42,7 +42,8 @@
     <div class="col-12">
         <!-- listing_details textinput -->
         <div class="form-floating">
-            <textarea name="listing_details" class="form-control" id="listing_details" placeholder="Listing Details" style="height: 100px"></textarea>
+            <textarea name="listing_details" class="form-control" id="listing_details" placeholder="Listing Details"
+                style="height: 100px"></textarea>
             <label for="listing_details">Listing Details</label>
         </div>
     </div>
@@ -50,7 +51,7 @@
         <!-- Listing image file upload-->
         <div class="d-flex flex-sm-row align-items-center justify-content-center mt-3 gap-2">
             <label for="poster">Poster/Image</label>
-            <input name="poster" type="text" accept="image/*" class="form-control" id="poster"
+            <input name="poster" type="file" accept="image/*" class="form-control" id="poster"
                 placeholder="Listing Image">
         </div>
     </div>
@@ -81,10 +82,12 @@
         <!-- bills_inclusive radio buttons -->
         <label for="bills_inclusive" class="form-label mt-3 me-2 text-muted">Bills_inclusive</label>
         <div class="btn-group" role="group" aria-label="bills_inclusive">
-            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive1" autocomplete="off" value="Yes">
+            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive1" autocomplete="off"
+                value="Yes">
             <label class="btn btn-outline-primary" for="bills_inclusive1">Yes</label>
 
-            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive2" autocomplete="off" value="No">
+            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive2" autocomplete="off"
+                value="No">
             <label class="btn btn-outline-primary" for="bills_inclusive2">No</label>
         </div>
     </div>

@@ -21,8 +21,8 @@
     <div class="col-lg-3">
         <!--Duration number input (with min and max attributes) -->
         <div class="form-floating">
-            <input name="duration" type="number" class="form-control" id="duration" placeholder="Duration"
-                min="1" max="12" value="{{ listing['duration'] }}">
+            <input name="duration" type="number" class="form-control" id="duration" placeholder="Duration" min="1"
+                max="12" value="{{ listing['duration'] }}">
             <label for="duration">Duration</label>
         </div>
     </div>
@@ -37,8 +37,8 @@
     <div class="col-12">
         <!--Description textinput -->
         <div class="form-floating">
-            <input name="listing_details" type="text" class="form-control" id="listing_details" placeholder="listing_details"
-                value="{{ listing['listing_details'] }}">
+            <input name="listing_details" type="text" class="form-control" id="listing_details"
+                placeholder="listing_details" value="{{ listing['listing_details'] }}">
             <label for="listing_details">listing_details</label>
         </div>
     </div>
@@ -46,8 +46,8 @@
         <!--listing poster file upload-->
         <div class="d-flex flex-sm-row align-items-center justify-content-center mt-3 gap-2">
             <label for="poster">Poster/Image</label>
-            <input name="poster" type="text" accept="image/*" class="form-control" id="poster" placeholder="listing Poster"
-                value="{{ listing['poster'] }}">
+            <input name="poster" type="file" accept="image/*" class="form-control" id="poster"
+                placeholder="listing Poster" value="{{ listing['poster'] }}">
         </div>
     </div>
     <div class="col-lg-5">
@@ -79,16 +79,16 @@
             <label class="form-check-label" for="watched">Watched</label>
         </div>
     </div> -->
-     <div class="col-sm-8 col-lg-5 text-center">
+    <div class="col-sm-8 col-lg-5 text-center">
         <!-- Rating radio buttons  -->
         <label for="bills_inclusive" class="form-label mt-3 me-2">Bills Inclusive</label>
         <div class="btn-group" role="group" aria-label="Bills Inclusive">
-            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusiveYes" autocomplete="off" value="Yes" {% if
-                listing['bills_inclusive']=='Yes' %}checked{% endif %}>
+            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusiveYes" autocomplete="off"
+                value="Yes" {% if listing['bills_inclusive']=='Yes' %}checked{% endif %}>
             <label class="btn btn-outline-primary" for="bills_inclusiveYes">Yes</label>
 
-            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusiveNo" autocomplete="off" value="No" {% if
-                listing['bills_inclusive']=='No' %}checked{% endif %}>
+            <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusiveNo" autocomplete="off"
+                value="No" {% if listing['bills_inclusive']=='No' %}checked{% endif %}>
             <label class="btn btn-outline-primary" for="bills_inclusiveNo">No</label>
 
             <!-- <input type="radio" class="btn-check" name="rating" id="rating3" autocomplete="off" value="3" {% if
@@ -123,6 +123,17 @@
 
 <!--Sidebar Content -->
 {% block sidebarContent %}
+<!-- Listing Image -->
+<div class="card mt-3">
+    <div class="card-body text-center">
+        <h5 class="card-title">Listing Poster</h5>
+        {% if not listing['poster'] %}
+        <p class="text-muted">No image available</p>
+        {% else %}
+        <img src="{{ listing['poster'] }}" class="card-img-top" alt="Image for {{ listing['listing_type'] }}">
+        {% endif %}
+    </div>
+</div>
 
 <div class="card mt-3">
     <div class="card-body text-center ">

@@ -5,6 +5,9 @@ from db.db import *
 
 # Create a Flask application instance
 app = Flask(__name__)
+# Allowed image extensions for uploads
+ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
 app.secret_key = 'your_secret_key'  # Required for CSRF protection
 csrf = CSRFProtect(app)  # This automatically protects all POST routes
 
@@ -23,8 +26,10 @@ localSiteName = "Tenancy Takeovers"
 def inject_site_name():
     return dict(siteName=localSiteName)
 
-# Helper function to get a username by user ID and provide it to templates 
+# Helper function to get a username by user ID and provide it to templates
 # eg: {{ film['user']|get_username }})
+
+
 @app.template_filter()
 def get_username(user_id):
     user = get_user_by_id(user_id)
@@ -44,12 +49,12 @@ def landing():
         studentName = session['username']
 
     # Get a list of listings to display on the homepage
-    listings = get_all_listings(limit=5, order_by='created DESC')  # Fetch the latest 5 listings added
+    # Fetch the latest 5 listings added
+    listings = get_all_listings(limit=5, order_by='created DESC')
 
     # Render the 'index.html' template and pass the 'name' variable to it and a title to set the page title dynamically
     return render_template('landing.html', title="Welcome", username=studentName, listings=listings)
 
-    
 
 # about page
 
@@ -133,7 +138,7 @@ def logout():
 
 @app.route('/listings/')
 def listings():
-     # Get the logged-in user's ID from the session
+    # Get the logged-in user's ID from the session
     user_id = session.get('user_id')
 
     # Ensure user is logged in to view films
@@ -162,9 +167,11 @@ def listing(id):
         return redirect(url_for('listings'))
 
 # Users listings List Page
+
+
 @app.route('/listings/<int:user_id>/')
 def userlistings(user_id):
-    
+
     # Get listing data
     listing_list = get_all_listings(user_id)
 
@@ -179,7 +186,8 @@ def userlistings(user_id):
 @app.route('/create/', methods=('GET', 'POST'))
 def create():
 
-    user = session.get('user_id')  # Get the logged-in user's ID from the session
+    # Get the logged-in user's ID from the session
+    user = session.get('user_id')
     # Ensure user is logged in to add films
     if user is None:
         flash(category='warning', message='You must be logged in to add a film.')
@@ -192,10 +200,21 @@ def create():
         listing_type = request.form['listing_type']
         postcode = request.form['postcode']
         listing_details = request.form['listing_details']
-        poster = request.form['poster']   #To do image upload
+
+        # Handle poster image upload
+        poster = None
+        if 'poster' in request.files:
+            poster_file = request.files['poster']
+            # Check it is an image file and save it
+            if poster_file and poster_file.filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS:
+                # Save the file to the static/uploads directory
+                poster_url = f"/static/uploads/{poster_file.filename}"
+                poster_file.save(f".{poster_url}")
+                poster = poster_url  # Use the uploaded file URL in database
+
         duration = request.form['duration']
         town = request.form['town']
-        price= request.form['price']
+        price = request.form['price']
 
         # Validate the input
         if not listing_type:
@@ -203,7 +222,8 @@ def create():
             return redirect(url_for('create'))
 
         # Use the database function to insert new listing
-        create_listing(user, listing_type, postcode, listing_details, poster, duration, town, price)
+        create_listing(user, listing_type, postcode,
+                       listing_details, poster, duration, town, price)
         # ===========================
 
         # Flash a success message
@@ -223,10 +243,10 @@ def update(id):
     error = None
     if not listing_data:
         error = 'Listing not found!'
-        flash(category= 'warning', message=error)
+        flash(category='warning', message=error)
     elif listing_data['user'] != session.get('user_id'):
         error = 'You do not have permission to edit this listing.'
-        flash(category ='danger', message = error)
+        flash(category='danger', message=error)
         return redirect(url_for('listings'))
     if error:
         redirect(url_for('listings'))
@@ -238,10 +258,19 @@ def update(id):
         listing_type = request.form['listing_type']
         postcode = request.form['postcode']
         listing_details = request.form['listing_details']
-        poster = request.form['poster']   #To do image upload
+        poster = listing['poster']  # Default to existing poster
+        if 'poster' in request.files:
+            poster_file = request.files['poster']
+            # Check it is an image file and save it
+            if poster_file and poster_file.filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS:
+                # Save the file to the static/uploads directory
+                poster_url = f"/static/uploads/{poster_file.filename}"
+                poster_file.save(f".{poster_url}")
+                poster = poster_url  # Use the uploaded file URL in database
+
         duration = request.form['duration']
         town = request.form['town']
-        price= request.form['price']
+        price = request.form['price']
 
         # Validate the input
         if not listing_type:
@@ -250,7 +279,8 @@ def update(id):
 
         # Use database function to update listings
 
-        update_listing(id, listing_type, postcode, listing_details, poster, duration, town, price)
+        update_listing(id, listing_type, postcode,
+                       listing_details, poster, duration, town, price)
         # ===========================
 
         # Flash a success message
@@ -265,14 +295,15 @@ def update(id):
 @app.route('/delete/<int:id>', methods=('POST',))
 def delete(id):
 
-    # Get the film 
+    # Get the film
     listing = get_listing_by_id(id)
     # Check for errors
     error = None
     if listing is None:     # If listing not found, add error message
         error = 'Listing not found!'
         flash(category='warning', message=error)
-    elif listing['user'] != session.get('user_id'):    # Check user is only accessing their own films
+    # Check user is only accessing their own films
+    elif listing['user'] != session.get('user_id'):
         error = 'You do not have permission to delete this film.'
         flash(category='danger', message=error)
 
