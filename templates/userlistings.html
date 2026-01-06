@@ -1,20 +1,22 @@
 {% extends "base2.html" %}
 
 {% block content %}
-<!-- {% if session['user_id'] %}
-<a href="{{ url_for('create') }}" class="btn btn-primary mb-3 float-end">+ Add</a>
-{% endif %} -->
+{% if session['user_id'] == listings_user %}
+<a href="{{ url_for('create') }}" class="btn btn-custom mb-3 float-end">+ Add</a>
+{% endif %}
 
 
-<h3>{{ title }}</h3>
+<h1>{{ title }}</h1>
 <hr>
 
 <!-- Row for Listings Grid-->
+{% if listings %}
 <div class="row g-1 g-sm-3">
     {% for listing in listings %}
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
 
-    </div>
+    </div> -->
+
 
     <!-- Listing Card Column -->
     <div class="col-sm-8">
@@ -58,6 +60,11 @@
     </div>
 
     {% endfor %}
+    {% else %}
+    <div>
+        <p>You have no listings yet.</p>
+    </div>
+    {% endif %}
 </div>
 
 

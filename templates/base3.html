@@ -25,31 +25,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link {% if request.endpoint == 'landing' %} active{% endif %}" href="/">Home</a>
                     {% if session['user_id'] %}
-                    <a class="nav-link" href="/listings">Listings</a>
-                    <a class="nav-link" href="{{ url_for('userlistings', user_id=session['user_id']) }}">My Listings</a>
+                    <a class="nav-link {%if request.endpoint == 'listings' %} active {% endif %}"
+                        href="/listings">Listings</a>
+                    <a class="nav-link {%if request.endpoint == 'userlistings' %} active {% endif %}"
+                        href="{{ url_for('userlistings', user_id=session['user_id']) }}">My Listings</a>
                     {% endif %}
-                    <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link {%if request.endpoint == 'about' %} active {% endif %}" href="/about">About</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if session['user_id'] %}
                     <a class="nav-link" href="/logout">Logout</a>
                     {% else %}
-                    <a class="nav-link" href="/register">Register</a>
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link {%if request.endpoint == 'register' %} active {% endif %}"
+                        href="/register">Register</a>
+                    <a class="nav-link {%if request.endpoint == 'login' %} active {% endif %}" href="/login">Login</a>
                     {% endif %}
+
                 </div>
             </div>
         </div>
     </nav>
 
     <!--  2 Column Layout  -->
-    <div class="container mt-2" style="max-width:600px">
+    <main class="container-fluid mt-2">
         <div class="row">
 
             <!-- Column 1: Main Content -->
-            <div id="main-content" class="col-md-12">
+            <div id="main-content" class="col-md-8">
 
                 <!-- Flash Messages: This will display any error/success/status messages to the user -->
                 {% for category, message in get_flashed_messages(with_categories=True) %}
@@ -64,10 +68,10 @@
             </div>
 
             <!-- Column 2: Sidebar -->
-            <!-- <div id="sidebar" class="col-md-4"> -->
+            <div id="sidebar" class="col-md-4">
 
-            <!-- Sidebar Navigation Links -->
-            <!-- <div class="card">
+                <!-- Sidebar Navigation Links -->
+                <!-- <div class="card">
                     <div class="card-header">
                         Sidebar Card
                     </div>
@@ -76,15 +80,16 @@
                         <p class="card-text">We have another page</p>
                         <a href="/about" class="btn btn-primary">Go There</a>
                     </div>
-                </div>
+                </div> -->
 
-                {% block sidebarContent %} -->
-            <!-- This is where any sidebar content from child templates will be inserted -->
-            <!-- {% endblock %}
-            </div> -->
-
+                {% block sidebarContent %}
+                <!-- This is where any sidebar content from child templates will be inserted -->
+                {% endblock %}
+            </div>
         </div>
-    </div>
+
+
+    </main>
     <footer class="text-center mt-4">
         <p>&copy; 2025</p>
     </footer>

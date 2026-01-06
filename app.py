@@ -117,6 +117,7 @@ def login():
             session.clear()
             session['user_id'] = user['id']
             session['username'] = user['username']
+            flash(category='success', message=f'Welcome back {username}')
             # or wherever you want to redirect
             return redirect(url_for('listings'))
 
@@ -139,10 +140,10 @@ def logout():
 @app.route('/listings/')
 def listings():
     # Get the logged-in user's ID from the session
-    user_id = session.get('user_id')
+    logged_in_user = session.get('user_id')
 
     # Ensure user is logged in to view films
-    if user_id is None:
+    if logged_in_user is None:
         flash(category='warning', message='You must be logged in to view this page.')
         return redirect(url_for('login'))
 
@@ -157,10 +158,10 @@ def listings():
 def listing(id):
 
     # Get film data
-    listing_data = get_listing_by_id(id)
+    listing_info = get_listing_by_id(id)
 
-    if listing_data:
-        return render_template('listing.html', listing_type=listing_data['listing_type'], listing=listing_data)
+    if listing_info:
+        return render_template('listing.html', listing_type=listing_info['listing_type'], listing=listing_info)
     else:
         # If film not found, redirect to listings list with a flash message
         flash(category='warning', message='Requested listings not found!')
@@ -179,7 +180,7 @@ def userlistings(user_id):
     user = get_user_by_id(user_id)
 
     # Render the listing.html template with a list of listings
-    return render_template('listings.html', title=f"listings added by {user['username']}", listings=listing_list, listings_user=user_id)
+    return render_template('userlistings.html', title="My Listings", listings=listing_list, listings_user=user_id)
 
 
 # Add A Film Page
@@ -200,7 +201,6 @@ def create():
         listing_type = request.form['listing_type']
         postcode = request.form['postcode']
         listing_details = request.form['listing_details']
-
         # Handle poster image upload
         poster = None
         if 'poster' in request.files:
@@ -241,7 +241,7 @@ def update(id):
 
     # Check for errors
     error = None
-    if not listing_data:
+    if listing_data is None:
         error = 'Listing not found!'
         flash(category='warning', message=error)
     elif listing_data['user'] != session.get('user_id'):
@@ -249,7 +249,7 @@ def update(id):
         flash(category='danger', message=error)
         return redirect(url_for('listings'))
     if error:
-        redirect(url_for('listings'))
+        return redirect(url_for('listings'))
 
     # If the request method is POST, process the form submission
     if request.method == 'POST':
@@ -258,7 +258,7 @@ def update(id):
         listing_type = request.form['listing_type']
         postcode = request.form['postcode']
         listing_details = request.form['listing_details']
-        poster = listing['poster']  # Default to existing poster
+        poster = listing_data['poster']  # Default to existing poster
         if 'poster' in request.files:
             poster_file = request.files['poster']
             # Check it is an image file and save it

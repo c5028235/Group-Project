@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "base3.html" %}
 
 <!--Page Content -->
 {% block content %}
 
-<h1>Update listing</h1>
+<h1>Update Listing</h1>
 <hr>
 
 <!-- Update listing Form -->
@@ -13,7 +13,7 @@
     <div class="col-lg-9">
         <!--Listing textinput -->
         <div class="form-floating">
-            <input name="type" type="text" class="form-control" id="type" placeholder="Listing Type"
+            <input name="listing_type" type="text" class="form-control" id="listing_type" placeholder="Listing Type"
                 value="{{ listing['type'] }}">
             <label for="type">Listing Type</label>
         </div>
@@ -29,7 +29,7 @@
     <div class="col-12">
         <!-- Postcode textinput -->
         <div class="form-floating">
-            <input name="postcode" type="text" class="form-control" id="postcode" placeholder="listing Tag Line"
+            <input name="postcode" type="text" class="form-control" id="postcode" placeholder="Postcode"
                 value="{{ listing['postcode'] }}">
             <label for="postcode">Postcode</label>
         </div>
@@ -39,7 +39,7 @@
         <div class="form-floating">
             <input name="listing_details" type="text" class="form-control" id="listing_details"
                 placeholder="listing_details" value="{{ listing['listing_details'] }}">
-            <label for="listing_details">listing_details</label>
+            <label for="listing_details">Listing_details</label>
         </div>
     </div>
     <div class="col-12 mt-0">
@@ -54,19 +54,19 @@
         <!--town select with predefined options -->
         <div class="form-floating">
             <select name="town" class="form-select" id="town" aria-label="town select">
-                <option value="" {% if listing['town']=="" %}selected{% endif %}>Select Location</option>''
+                <option value="" {% if listing['town']=="" %}selected{% endif %}>Select Town</option>''
                 <option value="Sheffield" {% if listing['town']=="Sheffield" %}selected{% endif %}>Sheffield</option>
                 <option value="Doncaster" {% if listing['town']=="Doncaster" %}selected{% endif %}>Doncaster</option>
                 <option value="Rotherham" {% if listing['town']=="Rotherham" %}selected{% endif %}>Rotherham</option>
                 <option value="Manchester" {% if listing['town']=="Manchester" %}selected{% endif %}>Manchester</option>
-                <option value="Nothingham" {% if listing['town']=="Nothingham" %}selected{% endif %}>Nothingham</option>
+                <option value="Nottingham" {% if listing['town']=="Nottingham" %}selected{% endif %}>Nottingham</option>
                 <!-- <option value="Romance" {% if listing['town']=="Romance" %}selected{% endif %}>Romance</option>
                 <option value="Sci-Fi" {% if listing['town']=="Sci-Fi" %}selected{% endif %}>Sci-Fi</option>
                 <option value="Documentary" {% if listing['town']=="Documentary" %}selected{% endif %}>Documentary
                 </option>
                 <option value="Other" {% if listing['town']=="Other" %}selected{% endif %}>Other</option> -->
             </select>
-            <label for="town">Location</label>
+            <label for="town">Town</label>
         </div>
     </div>
     <!-- <div class="col-sm-4 col-lg-2 pb-3 text-center">
@@ -114,7 +114,7 @@
     </div>  -->
 
     <div class="col-12 text-center">
-        <button type="submit" class="btn btn-success w-100">Update</button>
+        <button type="submit" class="btn btn-custom w-100">Update</button>
     </div>
 
 </form>
@@ -137,7 +137,7 @@
 
 <div class="card mt-3">
     <div class="card-body text-center ">
-        <h5 class="card-type">Delete This listing?</h5>
+        <h5 class="card-type">Delete This Listing?</h5>
         <form method="post" Sheffield="{{ url_for('delete', id=listing['id']) }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button type="submit" class="btn btn-danger"

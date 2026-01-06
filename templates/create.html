@@ -6,15 +6,15 @@
 <h1>Add A Listing</h1>
 <hr>
 
-<!-- Add Film Form -->
+<!-- Add Listing Form -->
 <form method="post" enctype="multipart/form-data" class="row g-3">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
     <div class="col-lg-9">
         <!-- Listing type textinput -->
         <div class="form-floating">
-            <input name="type" type="text" class="form-control" id="type" placeholder="Listing Type">
-            <label for="type">Listing Type</label>
+            <input name="listing_type" type="text" class="form-control" id="listing_type" placeholder="Listing Type">
+            <label for="listing_type">Listing Type</label>
         </div>
     </div>
     <div class="col-lg-3">
@@ -56,17 +56,17 @@
         </div>
     </div>
     <div class="col-lg-5">
-        <!-- Genre select with predefined options -->
+        <!-- Location select with predefined options -->
         <div class="form-floating">
-            <select name="genre" class="form-select" id="genre" aria-label="Genre select">
+            <select name="town" class="form-select" id="town" aria-label="town select">
                 <option value="">Select Location</option>
-                <option value="Action">Sheffield</option>
-                <option value="Adventure">Doncaster</option>
-                <option value="Comedy">Rotherham</option>
-                <option value="Drama">Manchester</option>
-                <option value="Horror">Nothingham</option>
+                <option value="Sheffield">Sheffield</option>
+                <option value="Doncaster">Doncaster</option>
+                <option value="Rotherham">Rotherham</option>
+                <option value="Manchester">Manchester</option>
+                <option value="Nottingham">Nottingham</option>
             </select>
-            <label for="genre">Location</label>
+            <label for="town">Location</label>
         </div>
     </div>
     <!-- <div class="col-sm-4 col-lg-2 pb-3 text-center">
@@ -83,7 +83,7 @@
         <label for="bills_inclusive" class="form-label mt-3 me-2 text-muted">Bills_inclusive</label>
         <div class="btn-group" role="group" aria-label="bills_inclusive">
             <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive1" autocomplete="off"
-                value="Yes">
+                value="Yes" required>
             <label class="btn btn-outline-primary" for="bills_inclusive1">Yes</label>
 
             <input type="radio" class="btn-check" name="bills_inclusive" id="bills_inclusive2" autocomplete="off"
@@ -121,7 +121,7 @@
     </div> -->
 
     <div class="col-12 text-center">
-        <button type="submit" class="btn btn-success w-100">Create</button>
+        <button type="submit" class="btn btn-custom w-100">Create</button>
     </div>
 
 </form>
